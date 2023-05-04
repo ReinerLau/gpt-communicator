@@ -1,6 +1,6 @@
 <template>
-  <div class="px-5 select-none bg-[#eeeeee] h-screen">
-    <div
+  <div class="h-screen flex flex-col bg-[#343541]">
+    <!-- <div
       v-show="recordStatus"
       class="flex flex-col justify-center items-center fixed top-1/2 left-1/2 translate-x-[-50%] bg-slate-500 text-white p-5 rounded opacity-50"
     >
@@ -14,25 +14,33 @@
       class="fixed bottom-5 right-5 bg-green-500 p-2 rounded-full"
     >
       <img class="h-8 pointer-events-none" src="@/assets/microphone.svg" />
+    </div> -->
+    <div class="flex-1 overflow-auto">
+      <div v-for="item in 100" :key="item">{{ item }}</div>
     </div>
-    <div class="py-3 text-center text-green-500 text-xl font-bold">智能移动机器人中山研究院</div>
-    <div>
+    <div class="h-24 flex justify-center">
+      <div class="bg-[#40414f] shadow rounded overflow-hidden w-1/2 h-1/2 flex p-3">
+        <input class="flex-1 bg-[#40414f] outline-none text-white" />
+        <img class="h-full cursor-pointer" src="@/assets/microphone.svg" />
+      </div>
+    </div>
+    <!-- <div>
       <select @change="handleVoiceChange" ref="voiceOptions" class="w-full" id="voiceOptions">
         <option v-for="voice in voices" :key="voice.name" :value="voice.name">
           {{ voice.name }}
         </option>
       </select>
-    </div>
-    <div class="flex justify-end my-5">
-      <div class="max-w-xs p-2 rounded bg-green-500 text-white break-all shadow-md">
+    </div> -->
+    <!-- <div class="flex justify-end">
+      <div class="p-2 rounded bg-green-500 text-white break-all shadow-md">
         {{ question }}
       </div>
     </div>
-    <div class="flex justify-start my-5">
+    <div class="flex justify-start">
       <div @touchstart="handlePlay" class="max-w-xs p-2 rounded bg-white break-all shadow-md">
         <Markdown :source="answer"></Markdown>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -40,7 +48,6 @@
 import type { ChatCompletionRequestMessage } from 'openai'
 import { Configuration, OpenAIApi } from 'openai'
 import { ref } from 'vue'
-import Markdown from 'vue3-markdown-it'
 
 const synth = window.speechSynthesis
 const SpeechRecognition =
@@ -57,10 +64,10 @@ function handleVoiceChange(e) {
 }
 
 function initSpeech() {
-  voices.value = synth.getVoices().filter((item) => item.lang.includes('zh'))
+  voices.value = synth.getVoices()
   voice = voices.value[0]
   synth.onvoiceschanged = () => {
-    voices.value = synth.getVoices().filter((item) => item.lang.includes('zh'))
+    voices.value = synth.getVoices()
     voice = voices.value[0]
   }
 }
@@ -139,3 +146,9 @@ async function getAnswer() {
 initSpeech()
 initRecognition()
 </script>
+
+<style>
+::-webkit-scrollbar {
+  display: none;
+}
+</style>
