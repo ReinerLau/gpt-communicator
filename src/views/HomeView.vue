@@ -15,8 +15,19 @@
     >
       <img class="h-8 pointer-events-none" src="@/assets/microphone.svg" />
     </div> -->
-    <div class="flex-1 overflow-auto">
-      <div v-for="item in 100" :key="item">{{ item }}</div>
+    <div class="flex-1 overflow-auto p-5">
+      <div class="flex justify-end items-center mb-4">
+        <div class="max-w-full p-2 rounded bg-slate-600 text-white break-all shadow-md">
+          111111111111111111111111111111111111111111111111111111111111111111111111111
+        </div>
+        <div class="text-2xl ml-3">🙍‍♂️</div>
+      </div>
+      <div class="flex justify-start items-center mb-4">
+        <div class="text-2xl mr-3">‍️🤖</div>
+        <div class="max-w-full p-2 rounded bg-slate-600 text-white break-all shadow-md">
+          111111111111111111111111111111111111111111111111111111111111111111111111111
+        </div>
+      </div>
     </div>
     <div class="h-24 flex justify-center">
       <div class="bg-[#40414f] shadow rounded overflow-hidden w-1/2 h-1/2 flex p-3">
