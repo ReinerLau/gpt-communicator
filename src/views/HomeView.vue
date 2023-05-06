@@ -1,13 +1,13 @@
 <template>
   <div class="h-screen flex flex-col bg-[#343541]">
-    <!-- <div
+    <div
       v-show="recordStatus"
       class="flex flex-col justify-center items-center fixed top-1/2 left-1/2 translate-x-[-50%] bg-slate-500 text-white p-5 rounded opacity-50"
     >
       <img class="h-8" src="@/assets/microphone.svg" />
       <span>语音识别中...</span>
     </div>
-    <div
+    <!-- <div
       @click="handlePlay"
       @touchstart="handleRecordStart"
       @touchend="handleRecordEnd"
@@ -31,8 +31,8 @@
     </div>
     <div class="h-24 flex justify-center">
       <div class="bg-[#40414f] shadow rounded overflow-hidden w-1/2 h-1/2 flex p-3">
-        <input class="flex-1 bg-[#40414f] outline-none text-white" />
-        <img class="h-full cursor-pointer" src="@/assets/microphone.svg" />
+        <input v-model="question" class="flex-1 bg-[#40414f] outline-none text-white" />
+        <img @mousedown="handleRecordStart" @mouseup="handleRecordEnd" class="h-full cursor-pointer" src="@/assets/microphone.svg" />
       </div>
     </div>
     <!-- <div>
@@ -95,7 +95,6 @@ function handlePlay() {
 
 function initRecognition() {
   recognition.continuous = true
-  recognition.lang = 'zh-CN'
   recognition.interimResults = true
   recognition.maxAlternatives = 1
   recognition.onresult = (e) => {
@@ -117,13 +116,13 @@ function handleRecordStart() {
 function handleRecordEnd() {
   recordStatus.value = false
   recognition.stop()
-  if (!question.value) return
-  if (messages.length > 1 && question.value === messages[messages.length - 2].content) return
-  messages.push({
-    role: 'user',
-    content: question.value
-  })
-  getAnswer()
+  // if (!question.value) return
+  // if (messages.length > 1 && question.value === messages[messages.length - 2].content) return
+  // messages.push({
+  //   role: 'user',
+  //   content: question.value
+  // })
+  // getAnswer()
 }
 
 const messages: ChatCompletionRequestMessage[] = [
