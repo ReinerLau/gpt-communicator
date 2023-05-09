@@ -25,7 +25,7 @@
           <div class="text-2xl mr-3">‍️🤖</div>
           <div
             @click="() => handlePlay(item.content)"
-            class="max-w-full p-2 rounded bg-slate-600 text-white break-all shadow-md cursor-pointer"
+            class="max-w-full p-2 rounded bg-slate-600 text-white break-all shadow-md cursor-pointer whitespace-pre-wrap"
           >
             {{ item.content }}
           </div>
@@ -103,7 +103,7 @@ function handlePlay(message) {
 }
 
 function initRecognition() {
-  recognition.continuous = true
+  // recognition.continuous = true
   recognition.interimResults = true
   recognition.maxAlternatives = 1
   recognition.onresult = (e) => {
