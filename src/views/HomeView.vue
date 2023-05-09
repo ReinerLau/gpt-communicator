@@ -122,7 +122,7 @@ const messages = ref<ChatCompletionRequestMessage[]>([])
 async function getAnswer() {
   const configuration = new Configuration({
     apiKey: import.meta.env.VITE_APP_OPEN_AI_KEY,
-    basePath: 'https://api.openai-proxy.com/v1'
+    basePath: import.meta.env.VITE_APP_PROXY
   })
   const openai = new OpenAIApi(configuration)
   const answer = {
@@ -138,7 +138,7 @@ async function getAnswer() {
     messages.value.slice(-1)[0].content = completion.data.choices[0].message?.content as string
     handlePlay(messages.value.slice(-1)[0].content)
   } catch (error: any) {
-    answer.content = error.message
+    messages.value.slice(-1)[0].content = error.message
   }
 }
 
