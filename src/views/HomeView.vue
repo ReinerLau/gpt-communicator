@@ -29,7 +29,7 @@
         </div>
       </template>
     </div>
-    <div class="h-24 flex justify-center">
+    <div class="relative h-24 flex justify-center">
       <div class="bg-[#40414f] shadow rounded overflow-hidden w-1/2 h-1/2 flex p-3">
         <input
           @keydown.enter="sendMessage"
@@ -49,6 +49,12 @@
         @click="clearMessage"
       >
         CLEAR
+      </div>
+      <div
+        class="text-xl text-white h-1/2 rounded px-2 flex items-center ml-2 cursor-pointer select-none absolute bottom-0 right-0"
+        @click="handleSetting"
+      >
+        ⚙️
       </div>
     </div>
   </div>
@@ -155,6 +161,12 @@ function sendMessage() {
 
 function clearMessage() {
   messages.value = []
+}
+
+const settingVisible = ref(false)
+
+function handleSetting() {
+  settingVisible.value = true
 }
 
 initSpeech()
