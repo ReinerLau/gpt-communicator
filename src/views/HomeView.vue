@@ -7,6 +7,9 @@
       <img class="h-8" src="@/assets/microphone.svg" />
       <span>语音识别中...</span>
     </div>
+    <div class="text-xl flex items-center p-2">
+      <div class="cursor-pointer select-none" @click="handleSetting">⚙️</div>
+    </div>
     <div class="flex-1 overflow-auto p-5">
       <template v-for="item in messages" :key="item.content">
         <div v-if="item.role === 'user'" class="flex justify-end items-center mb-4">
@@ -50,13 +53,20 @@
       >
         CLEAR
       </div>
-      <div
-        class="text-xl text-white h-1/2 rounded px-2 flex items-center ml-2 cursor-pointer select-none absolute bottom-0 right-0"
-        @click="handleSetting"
-      >
-        ⚙️
-      </div>
     </div>
+    <el-drawer v-model="settingVisible">
+      <div class="flex items-center">
+        <span>voice：</span>
+        <el-select class="flex-1" :model-value="voice.name" @change="handleChangeVoice">
+          <el-option
+            v-for="item in voices"
+            :key="item.name"
+            :label="item.name"
+            :value="item.name"
+          ></el-option>
+        </el-select>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
@@ -73,24 +83,22 @@ const synth = window.speechSynthesis
 const SpeechRecognition =
   (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
 const recognition = new SpeechRecognition()
-let voice
+const voice = ref()
 const question = ref('')
 const recordStatus = ref(false)
 const voices = ref<any>([])
 
 function initSpeech() {
-  voices.value = synth.getVoices()
-  voice = voices.value[0]
   synth.onvoiceschanged = () => {
     voices.value = synth.getVoices()
-    voice = voices.value[0]
+    voice.value = voices.value[0]
   }
 }
 
 function handlePlay(message) {
   if (synth.speaking) synth.cancel()
   const utter = new SpeechSynthesisUtterance(message)
-  utter.voice = voice
+  utter.voice = voice.value
   synth.speak(utter)
 }
 
@@ -167,6 +175,10 @@ const settingVisible = ref(false)
 
 function handleSetting() {
   settingVisible.value = true
+}
+
+function handleChangeVoice(val) {
+  voice.value = voices.value.find((item) => item.name === val)
 }
 
 initSpeech()
