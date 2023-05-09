@@ -55,9 +55,9 @@
       </div>
     </div>
     <el-drawer v-model="settingVisible">
-      <div class="flex items-center">
-        <span>voice：</span>
-        <el-select class="flex-1" :model-value="voice.name" @change="handleChangeVoice">
+      <div class="flex justify-between items-center mb-2">
+        <div>voice</div>
+        <el-select :model-value="voice.name" @change="handleChangeVoice">
           <el-option
             v-for="item in voices"
             :key="item.name"
@@ -66,18 +66,24 @@
           ></el-option>
         </el-select>
       </div>
+      <div class="flex justify-between items-center">
+        <div>key</div>
+        <el-input v-model="key" class="w-96" @change="saveKey"></el-input>
+      </div>
     </el-drawer>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ElMessage } from 'element-plus'
+import Cookie from 'js-cookie'
 import {
   ChatCompletionRequestMessageRoleEnum,
   Configuration,
   OpenAIApi,
   type ChatCompletionRequestMessage
 } from 'openai'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const synth = window.speechSynthesis
 const SpeechRecognition =
@@ -134,8 +140,12 @@ function handleRecordEnd() {
 const messages = ref<ChatCompletionRequestMessage[]>([])
 
 async function getAnswer() {
+  if (!key.value) {
+    ElMessage({ type: 'warning', message: '请先设置key' })
+    return
+  }
   const configuration = new Configuration({
-    apiKey: import.meta.env.VITE_APP_OPEN_AI_KEY,
+    apiKey: key.value,
     basePath: import.meta.env.VITE_APP_PROXY
   })
   const openai = new OpenAIApi(configuration)
@@ -181,8 +191,18 @@ function handleChangeVoice(val) {
   voice.value = voices.value.find((item) => item.name === val)
 }
 
+function saveKey(val) {
+  Cookie.set('key', val)
+}
+
+const key = ref('')
+
 initSpeech()
 initRecognition()
+
+onMounted(() => {
+  key.value = Cookie.get('key') || ''
+})
 </script>
 
 <style>

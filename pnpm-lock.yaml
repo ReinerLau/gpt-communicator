@@ -7,6 +7,9 @@ dependencies:
   highlight.js:
     specifier: ^11.7.0
     version: registry.npmmirror.com/highlight.js@11.7.0
+  js-cookie:
+    specifier: ^3.0.5
+    version: registry.npmmirror.com/js-cookie@3.0.5
   openai:
     specifier: ^3.2.1
     version: registry.npmmirror.com/openai@3.2.1
@@ -21,7 +24,7 @@ dependencies:
     version: registry.npmmirror.com/vue-router@4.1.6(vue@3.2.47)
   vue3-markdown-it:
     specifier: ^1.0.10
-    version: registry.npmmirror.com/vue3-markdown-it@1.0.10(@types/markdown-it@12.2.3)
+    version: registry.npmmirror.com/vue3-markdown-it@1.0.10
 
 devDependencies:
   '@rushstack/eslint-patch':
@@ -877,12 +880,6 @@ packages:
     version: 7.0.11
     dev: true
 
-  registry.npmmirror.com/@types/linkify-it@3.0.2:
-    resolution: {integrity: sha512-HZQYqbiFVWufzCwexrvh694SOim8z2d+xJl5UNamcvQFejLY/2YUtzXHYi3cHdI7PMlS8ejH2slRAOJQ32aNbA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/linkify-it/-/linkify-it-3.0.2.tgz}
-    name: '@types/linkify-it'
-    version: 3.0.2
-    dev: false
-
   registry.npmmirror.com/@types/lodash-es@4.17.7:
     resolution: {integrity: sha512-z0ptr6UI10VlU6l5MYhGwS4mC8DZyYer2mCoyysZtSF7p26zOX8UpbrV0YpNYLGS8K4PUFIyEr62IMFFjveSiQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/lodash-es/-/lodash-es-4.17.7.tgz}
     name: '@types/lodash-es'
@@ -895,21 +892,6 @@ packages:
     resolution: {integrity: sha512-r22s9tAS7imvBt2lyHC9B8AGwWnXaYb1tY09oyLkXDs4vArpYJzw09nj8MLx5VfciBPGIb+ZwG0ssYnEPJxn/g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/lodash/-/lodash-4.14.194.tgz}
     name: '@types/lodash'
     version: 4.14.194
-    dev: false
-
-  registry.npmmirror.com/@types/markdown-it@12.2.3:
-    resolution: {integrity: sha512-GKMHFfv3458yYy+v/N8gjufHO6MSZKCOXpZc5GXIWWy8uldwfmPn98vp81gZ5f9SVw8YYBctgfJ22a2d7AOMeQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/markdown-it/-/markdown-it-12.2.3.tgz}
-    name: '@types/markdown-it'
-    version: 12.2.3
-    dependencies:
-      '@types/linkify-it': registry.npmmirror.com/@types/linkify-it@3.0.2
-      '@types/mdurl': registry.npmmirror.com/@types/mdurl@1.0.2
-    dev: false
-
-  registry.npmmirror.com/@types/mdurl@1.0.2:
-    resolution: {integrity: sha512-eC4U9MlIcu2q0KQmXszyn5Akca/0jrQmwDRgpAMJai7qBWq4amIQhZyNau4VYGtCeALvW1/NtjzJJ567aZxfKA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/mdurl/-/mdurl-1.0.2.tgz}
-    name: '@types/mdurl'
-    version: 1.0.2
     dev: false
 
   registry.npmmirror.com/@types/node@18.14.2:
@@ -2818,6 +2800,13 @@ packages:
     hasBin: true
     dev: true
 
+  registry.npmmirror.com/js-cookie@3.0.5:
+    resolution: {integrity: sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/js-cookie/-/js-cookie-3.0.5.tgz}
+    name: js-cookie
+    version: 3.0.5
+    engines: {node: '>=14'}
+    dev: false
+
   registry.npmmirror.com/js-sdsl@4.4.0:
     resolution: {integrity: sha512-FfVSdx6pJ41Oa+CF7RDaFmTnCaFhua+SNYQX74riGOpl96x+2jQCqEfQ2bnXu/5DPCqlRuiqyvTJM0Qjz26IVg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/js-sdsl/-/js-sdsl-4.4.0.tgz}
     name: js-sdsl
@@ -2993,7 +2982,7 @@ packages:
     version: 1.0.4
     dev: false
 
-  registry.npmmirror.com/markdown-it-anchor@8.6.7(@types/markdown-it@12.2.3)(markdown-it@12.3.2):
+  registry.npmmirror.com/markdown-it-anchor@8.6.7(markdown-it@12.3.2):
     resolution: {integrity: sha512-FlCHFwNnutLgVTflOYHPW2pPcl2AACqVzExlkGQNsi4CJgqOHN7YTgDd4LuhgN1BFO3TS0vLAruV1Td6dwWPJA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/markdown-it-anchor/-/markdown-it-anchor-8.6.7.tgz}
     id: registry.npmmirror.com/markdown-it-anchor/8.6.7
     name: markdown-it-anchor
@@ -3002,7 +2991,6 @@ packages:
       '@types/markdown-it': '*'
       markdown-it: '*'
     dependencies:
-      '@types/markdown-it': registry.npmmirror.com/@types/markdown-it@12.2.3
       markdown-it: registry.npmmirror.com/markdown-it@12.3.2
     dev: false
 
@@ -4259,15 +4247,14 @@ packages:
       typescript: registry.npmmirror.com/typescript@4.8.4
     dev: true
 
-  registry.npmmirror.com/vue3-markdown-it@1.0.10(@types/markdown-it@12.2.3):
+  registry.npmmirror.com/vue3-markdown-it@1.0.10:
     resolution: {integrity: sha512-mTvHu0zl7jrh7ojgaZ+tTpCLiS4CVg4bTgTu4KGhw/cRRY5YgIG8QgFAPu6kCzSW6Znc9a52Beb6hFvF4hSMkQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vue3-markdown-it/-/vue3-markdown-it-1.0.10.tgz}
-    id: registry.npmmirror.com/vue3-markdown-it/1.0.10
     name: vue3-markdown-it
     version: 1.0.10
     dependencies:
       markdown-it: registry.npmmirror.com/markdown-it@12.3.2
       markdown-it-abbr: registry.npmmirror.com/markdown-it-abbr@1.0.4
-      markdown-it-anchor: registry.npmmirror.com/markdown-it-anchor@8.6.7(@types/markdown-it@12.2.3)(markdown-it@12.3.2)
+      markdown-it-anchor: registry.npmmirror.com/markdown-it-anchor@8.6.7(markdown-it@12.3.2)
       markdown-it-deflist: registry.npmmirror.com/markdown-it-deflist@2.1.0
       markdown-it-emoji: registry.npmmirror.com/markdown-it-emoji@2.0.2
       markdown-it-footnote: registry.npmmirror.com/markdown-it-footnote@3.0.3
