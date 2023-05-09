@@ -7,32 +7,40 @@
       <img class="h-8" src="@/assets/microphone.svg" />
       <span>语音识别中...</span>
     </div>
-    <!-- <div
-      @click="handlePlay"
-      @touchstart="handleRecordStart"
-      @touchend="handleRecordEnd"
-      class="fixed bottom-5 right-5 bg-green-500 p-2 rounded-full"
-    >
-      <img class="h-8 pointer-events-none" src="@/assets/microphone.svg" />
-    </div> -->
     <div class="flex-1 overflow-auto p-5">
-      <div class="flex justify-end items-center mb-4">
-        <div class="max-w-full p-2 rounded bg-slate-600 text-white break-all shadow-md">
-          111111111111111111111111111111111111111111111111111111111111111111111111111
+      <template v-for="item in messages" :key="item.content">
+        <div v-if="item.role === 'user'" class="flex justify-end items-center mb-4">
+          <div class="max-w-full p-2 rounded bg-slate-600 text-white break-all shadow-md">
+            {{ item.content }}
+          </div>
+          <div class="text-2xl ml-3">🙍‍♂️</div>
         </div>
-        <div class="text-2xl ml-3">🙍‍♂️</div>
-      </div>
-      <div class="flex justify-start items-center mb-4">
-        <div class="text-2xl mr-3">‍️🤖</div>
-        <div class="max-w-full p-2 rounded bg-slate-600 text-white break-all shadow-md">
-          111111111111111111111111111111111111111111111111111111111111111111111111111
+        <div v-if="item.role === 'assistant'" class="flex justify-start items-center mb-4">
+          <div class="text-2xl mr-3">‍️🤖</div>
+          <div class="max-w-full p-2 rounded bg-slate-600 text-white break-all shadow-md">
+            {{ item.content }}
+          </div>
         </div>
-      </div>
+      </template>
     </div>
     <div class="h-24 flex justify-center">
       <div class="bg-[#40414f] shadow rounded overflow-hidden w-1/2 h-1/2 flex p-3">
-        <input v-model="question" class="flex-1 bg-[#40414f] outline-none text-white" />
-        <img @mousedown="handleRecordStart" @mouseup="handleRecordEnd" class="h-full cursor-pointer" src="@/assets/microphone.svg" />
+        <input
+          @keydown.enter="sendMessage"
+          v-model="question"
+          class="flex-1 bg-[#40414f] outline-none text-white"
+        />
+        <img
+          @click="handleRecordStart"
+          class="h-full cursor-pointer"
+          src="@/assets/microphone.svg"
+        />
+      </div>
+      <div
+        class="bg-amber-200 h-1/2 rounded px-2 flex items-center ml-2 cursor-pointer select-none hover:bg-amber-100 active:bg-yellow-200"
+        @click="sendMessage"
+      >
+        SEND
       </div>
     </div>
     <!-- <div>
@@ -95,20 +103,17 @@ function handlePlay() {
 
 function initRecognition() {
   recognition.continuous = true
-  recognition.interimResults = true
+  // recognition.interimResults = true
   recognition.maxAlternatives = 1
   recognition.onresult = (e) => {
     const text = e.results[0][0].transcript
     question.value = text
-  }
-
-  recognition.onerror = (e) => {
-    console.log(e.error)
+    recordStatus.value = false
   }
 }
 
 function handleRecordStart() {
-  synth.cancel()
+  // synth.cancel()
   recordStatus.value = true
   recognition.start()
 }
@@ -116,18 +121,18 @@ function handleRecordStart() {
 function handleRecordEnd() {
   recordStatus.value = false
   recognition.stop()
-  // if (!question.value) return
-  // if (messages.length > 1 && question.value === messages[messages.length - 2].content) return
-  // messages.push({
-  //   role: 'user',
-  //   content: question.value
-  // })
+  if (!question.value) return
+  messages.value.push({
+    role: 'user',
+    content: question.value
+  })
+  question.value = ''
   // getAnswer()
 }
 
-const messages: ChatCompletionRequestMessage[] = [
+const messages = ref<ChatCompletionRequestMessage[]>([
   // { role: 'system', content: 'You are a helpful assistant.' }
-]
+])
 
 async function getAnswer() {
   answer.value = '思考中......'
@@ -140,10 +145,10 @@ async function getAnswer() {
   try {
     const completion = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
-      messages
+      messages: messages.value
     })
     answer.value = completion.data.choices[0].message?.content as string
-    messages.push({
+    messages.value.push({
       role: 'assistant',
       content: answer.value
     })
@@ -151,6 +156,15 @@ async function getAnswer() {
   } catch (error: any) {
     answer.value = error.message
   }
+}
+
+function sendMessage() {
+  if (!question.value) return
+  messages.value.push({
+    role: 'user',
+    content: question.value
+  })
+  question.value = ''
 }
 
 initSpeech()
