@@ -64,9 +64,9 @@
 </template>
 
 <script setup lang="ts">
-import type { ChatCompletionRequestMessage } from 'openai'
+import { ChatCompletionRequestMessageRoleEnum, type ChatCompletionRequestMessage } from 'openai'
 import { Configuration, OpenAIApi } from 'openai'
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
 
 const synth = window.speechSynthesis
 const SpeechRecognition =
@@ -130,41 +130,38 @@ function handleRecordEnd() {
   // getAnswer()
 }
 
-const messages = ref<ChatCompletionRequestMessage[]>([
-  // { role: 'system', content: 'You are a helpful assistant.' }
-])
+const messages = ref<ChatCompletionRequestMessage[]>([])
 
 async function getAnswer() {
-  answer.value = '思考中......'
   const configuration = new Configuration({
     apiKey: import.meta.env.VITE_APP_OPEN_AI_KEY,
-    // basePath: 'https://closeai.deno.dev/v1'
     basePath: 'https://api.openai-proxy.com/v1'
   })
   const openai = new OpenAIApi(configuration)
+  const answer = {
+    role: ChatCompletionRequestMessageRoleEnum.Assistant,
+    content: 'Thinking...'
+  }
+  messages.value.push(answer)
   try {
     const completion = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
-      messages: messages.value
+      messages: messages.value.filter((item) => item.content !== 'Thinking...')
     })
-    answer.value = completion.data.choices[0].message?.content as string
-    messages.value.push({
-      role: 'assistant',
-      content: answer.value
-    })
-    handlePlay()
+    messages.value.slice(-1)[0].content = completion.data.choices[0].message?.content as string
   } catch (error: any) {
-    answer.value = error.message
+    answer.content = error.message
   }
 }
 
 function sendMessage() {
   if (!question.value) return
   messages.value.push({
-    role: 'user',
+    role: ChatCompletionRequestMessageRoleEnum.User,
     content: question.value
   })
   question.value = ''
+  getAnswer()
 }
 
 initSpeech()
