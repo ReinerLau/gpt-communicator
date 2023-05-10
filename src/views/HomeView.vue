@@ -54,7 +54,7 @@
         CLEAR
       </div>
     </div>
-    <el-drawer v-model="settingVisible">
+    <el-drawer v-model="settingVisible" class="bg-[#343541] text-white">
       <div class="flex justify-between items-center mb-2">
         <div>voice</div>
         <el-select :model-value="voice.name" @change="handleChangeVoice">
@@ -66,9 +66,13 @@
           ></el-option>
         </el-select>
       </div>
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-center mb-2">
         <div>key</div>
         <el-input v-model="key" class="w-96" @change="saveKey"></el-input>
+      </div>
+      <div class="flex justify-between items-center">
+        <div>proxy</div>
+        <el-input v-model="proxy" class="w-96" @change="saveProxy"></el-input>
       </div>
     </el-drawer>
   </div>
@@ -146,7 +150,7 @@ async function getAnswer() {
   }
   const configuration = new Configuration({
     apiKey: key.value,
-    basePath: import.meta.env.VITE_APP_PROXY
+    basePath: proxy.value
   })
   const openai = new OpenAIApi(configuration)
   const answer = {
@@ -202,7 +206,13 @@ initRecognition()
 
 onMounted(() => {
   key.value = Cookie.get('key') || ''
+  proxy.value = Cookie.get('proxy') || import.meta.env.VITE_APP_PROXY
 })
+
+const proxy = ref('')
+function saveProxy(val) {
+  Cookie.set('proxy', val)
+}
 </script>
 
 <style>
