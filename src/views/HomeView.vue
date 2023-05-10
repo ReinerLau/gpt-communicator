@@ -12,8 +12,20 @@
     </div>
     <div class="flex-1 overflow-auto p-5">
       <template v-for="(item, index) in messages" :key="item.content">
-        <div v-if="item.role === 'user'" class="flex justify-end items-center mb-4">
-          <div class="mr-2 cursor-pointer" @click="() => handleRegenerate(index)">🔄</div>
+        <div
+          v-if="
+            item.role === ChatCompletionRequestMessageRoleEnum.User ||
+            item.role === ChatCompletionRequestMessageRoleEnum.System
+          "
+          class="flex justify-end items-center mb-4"
+        >
+          <div
+            v-if="item.role === ChatCompletionRequestMessageRoleEnum.User"
+            class="mr-2 cursor-pointer"
+            @click="() => handleRegenerate(index)"
+          >
+            🔄
+          </div>
           <div
             @click="() => handlePlay(item.content)"
             class="max-w-full p-2 rounded bg-slate-600 text-white break-all shadow-md cursor-pointer"
@@ -22,7 +34,10 @@
           </div>
           <div class="text-2xl ml-3">🙍‍♂️</div>
         </div>
-        <div v-if="item.role === 'assistant'" class="flex justify-start items-center mb-4">
+        <div
+          v-if="item.role === ChatCompletionRequestMessageRoleEnum.Assistant"
+          class="flex justify-start items-center mb-4"
+        >
           <div class="text-2xl mr-3">‍️🤖</div>
           <div
             @click="() => handlePlay(item.content)"
@@ -71,9 +86,19 @@
         <div>key</div>
         <el-input v-model="key" class="w-96" @change="saveKey"></el-input>
       </div>
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-center mb-2">
         <div>proxy</div>
         <el-input v-model="proxy" class="w-96" @change="saveProxy"></el-input>
+      </div>
+      <div class="flex justify-between">
+        <div>template</div>
+        <el-input
+          type="textarea"
+          :rows="10"
+          v-model="template"
+          class="w-96"
+          @change="saveTemplate"
+        ></el-input>
       </div>
       <template #footer>
         <el-button type="primary" @click="resetSettings">reset</el-button>
@@ -211,6 +236,11 @@ initRecognition()
 onMounted(() => {
   key.value = Cookie.get('key') || import.meta.env.VITE_APP_KEY
   proxy.value = Cookie.get('proxy') || import.meta.env.VITE_APP_PROXY
+  template.value = Cookie.get('template') || import.meta.env.VITE_APP_TEMPLATE
+  messages.value.push({
+    role: ChatCompletionRequestMessageRoleEnum.System,
+    content: template.value
+  })
 })
 
 const proxy = ref('')
@@ -226,6 +256,14 @@ function handleRegenerate(index) {
 function resetSettings() {
   proxy.value = import.meta.env.VITE_APP_PROXY
   voice.value = voices.value[0]
+  template.value = import.meta.env.VITE_APP_TEMPLATE
+  saveProxy(proxy.value)
+  saveTemplate(template.value)
+}
+
+const template = ref('')
+function saveTemplate(val) {
+  Cookie.set('template', val)
 }
 </script>
 
