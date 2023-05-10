@@ -11,8 +11,9 @@
       <div class="cursor-pointer select-none" @click="handleSetting">⚙️</div>
     </div>
     <div class="flex-1 overflow-auto p-5">
-      <template v-for="item in messages" :key="item.content">
+      <template v-for="(item, index) in messages" :key="item.content">
         <div v-if="item.role === 'user'" class="flex justify-end items-center mb-4">
+          <div class="mr-2 cursor-pointer" @click="() => handleRegenerate(index)">🔄</div>
           <div
             @click="() => handlePlay(item.content)"
             class="max-w-full p-2 rounded bg-slate-600 text-white break-all shadow-md cursor-pointer"
@@ -212,6 +213,11 @@ onMounted(() => {
 const proxy = ref('')
 function saveProxy(val) {
   Cookie.set('proxy', val)
+}
+
+function handleRegenerate(index) {
+  messages.value = messages.value.slice(0, index + 1)
+  getAnswer()
 }
 </script>
 
