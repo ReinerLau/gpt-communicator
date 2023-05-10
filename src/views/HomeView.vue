@@ -75,6 +75,9 @@
         <div>proxy</div>
         <el-input v-model="proxy" class="w-96" @change="saveProxy"></el-input>
       </div>
+      <template #footer>
+        <el-button type="primary" @click="resetSettings">reset</el-button>
+      </template>
     </el-drawer>
   </div>
 </template>
@@ -206,7 +209,7 @@ initSpeech()
 initRecognition()
 
 onMounted(() => {
-  key.value = Cookie.get('key') || ''
+  key.value = Cookie.get('key') || import.meta.env.VITE_APP_KEY
   proxy.value = Cookie.get('proxy') || import.meta.env.VITE_APP_PROXY
 })
 
@@ -218,6 +221,11 @@ function saveProxy(val) {
 function handleRegenerate(index) {
   messages.value = messages.value.slice(0, index + 1)
   getAnswer()
+}
+
+function resetSettings() {
+  proxy.value = import.meta.env.VITE_APP_PROXY
+  voice.value = voices.value[0]
 }
 </script>
 
